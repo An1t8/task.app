@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .task-checkbox:checked + label {
+            background-color: #a6f4a6;
+            transition: background-color 0.5s ease;
+        }
+        label {
+            padding: 4px 8px;
+            border-radius: 5px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h2>Úkoly</h2>
+<ul id="task-list"></ul>
+<a href="/profile.html">➡ Profil</a>
+
+<script>
+    fetch('/api/tasks')
+        .then(res => res.json())
+        .then(tasks => {
+            const list = document.getElementById('task-list');
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'task-' + index;
+                checkbox.className = 'task-checkbox';
+
+                const label = document.createElement('label');
+                label.setAttribute('for', checkbox.id);
+                label.textContent = task;
+
+                checkbox.onchange = () => {
+                    if (checkbox.checked) {
+                        fetch('/api/complete?task=' + encodeURIComponent(task), { method: 'POST' });
+                        setTimeout(() => checkbox.checked = false, 800);
+                    }
+                };
+
+                li.appendChild(checkbox);
+                li.appendChild(label);
+                list.appendChild(li);
+            });
+        });
+</script>
+</body>
+</html>

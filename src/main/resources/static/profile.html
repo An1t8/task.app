@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title></head>
+<body>
+<h2>Vítejte!</h2>
+<p id="email"></p>
+<h3>Úkoly splněné dnes:</h3>
+<ul id="done-tasks"></ul>
+<a href="/dashboard.html">⬅ Zpět na úkoly</a>
+<script>
+    fetch('/api/email').then(res => res.text()).then(email => {
+        document.getElementById('email').textContent = "Email: " + email;
+    });
+    fetch('/api/profile')
+        .then(res => res.json())
+        .then(tasks => {
+            const ul = document.getElementById('done-tasks');
+            tasks.forEach(t => {
+                const li = document.createElement('li');
+                li.textContent = t;
+                ul.appendChild(li);
+            });
+        });
+</script>
+</body>
+</html>
