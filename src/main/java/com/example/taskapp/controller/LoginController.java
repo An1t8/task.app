@@ -11,6 +11,7 @@ import java.util.Map;
 
 
 @RestController
+@RequestMapping("/api")
 public class LoginController {
 
     private static final Map<String, String> USERS = Map.of(
