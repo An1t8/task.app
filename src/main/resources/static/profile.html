@@ -8,7 +8,10 @@
 <p id="email"></p>
 <h3>Úkoly splněné dnes:</h3>
 <ul id="done-tasks"></ul>
-<a href="/dashboard.html">⬅ Zpět na úkoly</a>
+<div class="navigation">
+    <a href="/dashboard.html">⬅ Zpět na úkoly</a>
+    <a href="/all-profiles.html">👥 Všechny profily</a>
+</div>
 <script>
     fetch('/api/email').then(res => res.text()).then(email => {
         document.getElementById('email').textContent = "Email: " + email;

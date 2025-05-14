@@ -52,6 +52,9 @@ public class LoginController {
     public ResponseEntity<String> login(@RequestParam String username,
                                         @RequestParam String password,
                                         HttpSession session) {
+        if (!isValidEmail(username)) {
+            return ResponseEntity.badRequest().body("Neaplatný email!");
+        }
         String storedPassword = users.get(username);
         if (storedPassword != null && storedPassword.equals(password)) {
             session.setAttribute("user", username);
@@ -64,5 +67,10 @@ public class LoginController {
     @GetMapping("/logout")
     public void logout(HttpSession session) {
         session.invalidate();
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+[@A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
     }
 }

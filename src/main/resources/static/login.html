@@ -17,11 +17,22 @@
   document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const error = document.getElementById('error');
+    const emailRegex = /^[A-Za-z0-9+_.-]+[@A-Za-z0-9.-]+$/;
+
+
+    if (!emailRegex.test(username)) {
+      error.textContent = "Toto není platný email!";
+      return;
+    }
+
     const formData = new URLSearchParams();
     formData.append('username', document.getElementById('username').value);
     formData.append('password', document.getElementById('password').value);
 
-    fetch('/login', {
+    fetch('/api/login', {
       method: 'POST',
       body: formData,
     }).then(res => {
@@ -35,3 +46,4 @@
 </script>
 </body>
 </html>
+

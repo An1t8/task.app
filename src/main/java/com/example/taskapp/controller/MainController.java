@@ -4,6 +4,7 @@ import com.example.taskapp.storage.UserTask;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -43,6 +44,14 @@ public class MainController {
         return user != null ? user : "Nepřihlášen";
     }
 
+    @GetMapping("/all-profiles")
+    public Map<String, List<String>> getAllProfiles(HttpSession session) {
+        String user = (String) session.getAttribute("user");
+        if (user != null) {
+            return taskStorage.getAllUserTasks();
+        }
+        return Map.of();
+    }
 
 
 }
