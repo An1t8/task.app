@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Všechny profily</title>
+  <style>
+    .user-section {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #53868B;
+      border-radius: 5px;
+    }
+    .user-email {
+      font-weight: bold;
+      color: #8B0A50;
+      margin-bottom: 5px;
+    }
+
+    .navigation {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+    .navigation a {
+      text-decoration: none;
+      color: #8B0A50;
+    }
+    .navigation a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<h2>Všechny profily uživatelů</h2>
+<div id="all-profiles-container">
+  <p>Načítání profilů...</p>
+</div>
+
+<div class="navigation">
+  <a href="/dashboard.html">⬅ Zpět na úkoly</a>
+  <a href="/profile.html">👤 Můj profil</a>
+</div>
+
+<script>
+  fetch('/api/email')
+          .then(res => res.text())
+          .then(email => {
+            if (email === "Nepřihlášen") {
+              window.location.href = "/login.html";
+              return;
+            }
+
+            return fetch('/api/all-profiles');
+          })
+          .then(res => res.json())
+          .then(userProfiles => {
+            const container = document.getElementById('all-profiles-container');
+            container.innerHTML = '';
+
+            if (Object.keys(userProfiles).length === 0) {
+              container.innerHTML = '<p>Zatím nejsou k dispozici žádné údaje.</p>';
+              return;
+            }
+
+            const sortedUsers = Object.keys(userProfiles).sort();
+
+            sortedUsers.forEach(email => {
+              const tasks = userProfiles[email];
+
+              const userSection = document.createElement('div');
+              userSection.className = 'user-section';
+
+              const userEmail = document.createElement('div');
+              userEmail.className = 'user-email';
+              userEmail.textContent = email;
+              userSection.appendChild(userEmail);
+
+              if (tasks.length === 0) {
+                const noTasks = document.createElement('p');
+                noTasks.textContent = 'Žádné splněné úkoly';
+                userSection.appendChild(noTasks);
+              } else {
+                const tasksList = document.createElement('ul');
+                tasks.forEach(task => {
+                  const taskItem = document.createElement('li');
+                  taskItem.textContent = task;
+                  tasksList.appendChild(taskItem);
+                });
+                userSection.appendChild(tasksList);
+              }
+
+              container.appendChild(userSection);
+            });
+          })
+          .catch(error => {
+            document.getElementById('all-profiles-container').innerHTML =
+                    '<p style="color: red;">Chyba při načítání dat: ' + error.message + '</p>';
+          });
+</script>
+</body>
+</html>
+
