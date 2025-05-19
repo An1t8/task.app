@@ -3,8 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>Přihlášení</title>
+  <style>
+    body{
+      background-color: #B2DFEE;
+    }
+    form {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00C5CD;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #607B8B;
+    }
+  </style>
 </head>
 <body>
+
 <h2>Přihlášení</h2>
 <form id="loginForm">
   Email: <input type="text" name="username" id="username"><br>

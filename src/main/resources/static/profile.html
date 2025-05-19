@@ -2,30 +2,150 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Profil</title></head>
+    <title>Profil</title>
+</head>
+<style>
+    body{
+        background-color: #607B8B;
+        padding: 20px;
+    }
+    .content-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .main-content{
+        flex: 1;
+    }
+    .all-tasks-sidebar{
+        flex: 0 0 400px;
+        border: 1px solid black;
+        padding: 15px;
+        background-color: #CD6090;
+        border-radius: 8px;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        max-height: 800px;
+        overflow-y: auto;
+    }
+
+    .navigation a {
+        text-decoration: none;
+        color: black;
+        margin-right: 15px;
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+    }
+    h3 {
+        color: #D1EEEE;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 8px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #email {
+        margin-bottom: 20px;
+    }
+    .welcome-header {
+        margin-bottom: 5px;
+    }
+</style>
 <body>
-<h2>Vítejte!</h2>
+<h2 class="welcome-header">Vítejte!</h2>
 <p id="email"></p>
-<h3>Úkoly splněné dnes:</h3>
-<ul id="done-tasks"></ul>
+
+<div class="content-container">
+    <div class="main-content">
+        <h3>Úkoly splněné dnes:</h3>
+        <ul id="done-tasks"></ul>
+    </div>
+
+    <div class="all-tasks-sidebar">
+        <h3>Všechny dokončené úkoly</h3>
+        <ul id="all-user-tasks-list"></ul>
+    </div>
+</div>
+
 <div class="navigation">
     <a href="/dashboard.html">⬅ Zpět na úkoly</a>
     <a href="/all-profiles.html">👥 Všechny profily</a>
 </div>
+
 <script>
-    fetch('/api/email').then(res => res.text()).then(email => {
-        document.getElementById('email').textContent = "Email: " + email;
-    });
-    fetch('/api/profile')
-        .then(res => res.json())
-        .then(tasks => {
-            const ul = document.getElementById('done-tasks');
-            tasks.forEach(t => {
-                const li = document.createElement('li');
-                li.textContent = t;
-                ul.appendChild(li);
-            });
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: new URLSearchParams({
+            username: 'anee.tomeckova@gmail.com',
+            password: 'anee10'
+        })
+    })
+        .then(() => {
+            fetch('/api/email')
+                .then(res => res.text())
+                .then(email => {
+                    document.getElementById('email').textContent = "Email: " + email;
+                })
+                .catch(err => {
+                    console.error("Chyba při načítání emailu:", err);
+                    document.getElementById('email').textContent = "Nepodařilo se načíst email";
+                });
+
+            fetch('/api/profile')
+                .then(res => res.json())
+                .then(tasks => {
+                    const ul = document.getElementById('done-tasks');
+                    if (tasks.length === 0) {
+                        ul.innerHTML = '<p>Dnes zatím žádné úkoly.</p>';
+                    } else {
+                        tasks.forEach(t => {
+                            const li = document.createElement('li');
+                            li.textContent = t;
+                            ul.appendChild(li);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error("Chyba při načítání dnešních úkolů:", err);
+                    document.getElementById('done-tasks').innerHTML = '<p style="color: red;">Nepodařilo se načíst úkoly.</p>';
+                });
+
+            fetch('/api/profile/all-tasks')
+                .then(res => res.json())
+                .then(allTasks => {
+                    const list = document.getElementById('all-user-tasks-list');
+                    list.innerHTML = '';
+                    if (allTasks.length === 0) {
+                        list.innerHTML = '<p>Zatím žádné splněné úkoly.</p>';
+                    } else {
+                        allTasks.forEach(task => {
+                            const li = document.createElement('li');
+                            li.textContent = task;
+                            list.appendChild(li);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error("Chyba při načítání všech úkolů:", err);
+                    document.getElementById('all-user-tasks-list').innerHTML = '<p style="color: red;">Nepodařilo se načíst všechny úkoly.</p>';
+                });
+        })
+        .catch(err => {
+            console.error("Chyba při loginu:", err);
+            alert("Nepodařilo se přihlásit.");
         });
 </script>
 </body>
 </html>
+

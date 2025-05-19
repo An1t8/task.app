@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <style>
+        body{
+            background-color: #607B8B;
+        }
         .task-item {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
+            border: 1px solid black;
+            padding: 8px;
+            background-color: #C0C0C0;
         }
         .task-checkbox:checked + label {
-            background-color: #a6f4a6;
+            background-color: antiquewhite;
             transition: background-color 0.5s ease;
         }
         label {
@@ -18,13 +24,26 @@
             border-radius: 5px;
             margin-left: 8px;
             cursor: pointer;
+
+        }
+        .navigation a {
+            text-decoration: none;
+            color: black;
+            margin-right: 15px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: white;
         }
     </style>
 </head>
 <body>
 <h2>Úkoly</h2>
 <ul id="task-list"></ul>
-<a href="/profile.html">➡ Profil</a>
+<div class="navigation">
+<a href="/profile.html">👤 Profil</a>
+<a href="/all-profiles.html">👥 Všechny profily</a>
+</div>
 
 <script>
     fetch('/api/tasks')
@@ -35,20 +54,24 @@
                 const li = document.createElement('li');
                 li.className = 'task-item';
 
+
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.id = 'task-' + index;
                 checkbox.className = 'task-checkbox';
 
+
                 const label = document.createElement('label');
                 label.setAttribute('for', checkbox.id);
                 label.textContent = task;
+
 
                 checkbox.onchange = () => {
                     if (checkbox.checked) {
                         fetch('/api/complete?task=' + encodeURIComponent(task), { method: 'POST' });
                         setTimeout(() => checkbox.checked = false, 800);
                     }
+
                 };
 
                 li.appendChild(checkbox);
