@@ -5,7 +5,7 @@
   <title>Přihlášení</title>
   <style>
     body{
-      background-color: #B2DFEE;
+      background-color: #607B8B;
     }
     form {
       width: 300px;
@@ -28,7 +28,7 @@
     button {
       width: 100%;
       padding: 12px;
-      background-color: #00C5CD;
+      background-color: #607B8B;
       color: white;
       border: none;
       border-radius: 4px;
@@ -37,7 +37,7 @@
     }
 
     button:hover {
-      background-color: #607B8B;
+      background-color: #B2DFEE;
     }
   </style>
 </head>
@@ -62,7 +62,7 @@
 
 
     if (!emailRegex.test(username)) {
-      error.textContent = "Toto není platný email!";
+      error.textContent = "Prosím zadejte platný email!";
       return;
     }
 
@@ -79,6 +79,8 @@
       } else {
         document.getElementById('error').textContent = "Špatné přihlašovací údaje!";
       }
+    }).catch(error => {
+      document.getElementById('error').textContent = "Chyba při přihlašování. Zkuste to znovu.";
     });
   });
 </script>
