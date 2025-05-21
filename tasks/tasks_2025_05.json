@@ -1,17 +1,7 @@
 [
   {
     "date": "2025-05-21",
-    "task": "Vynést koš",
-    "user": "anee.tomeckova@gmail.com"
-  },
-  {
-    "date": "2025-05-21",
-    "task": "Umýt zem",
-    "user": "anee.tomeckova@gmail.com"
-  },
-  {
-    "date": "2025-05-21",
-    "task": "Jít se psem",
+    "task": "Prádlo",
     "user": "anee.tomeckova@gmail.com"
   },
   {
@@ -21,7 +11,17 @@
   },
   {
     "date": "2025-05-21",
-    "task": "Prádlo",
+    "task": "Umýt zem",
+    "user": "anee.tomeckova@gmail.com"
+  },
+  {
+    "date": "2025-05-21",
+    "task": "Udělat myčku",
+    "user": "anee.tomeckova@gmail.com"
+  },
+  {
+    "date": "2025-05-21",
+    "task": "Umýt zem",
     "user": "anee.tomeckova@gmail.com"
   }
 ]

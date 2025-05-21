@@ -111,8 +111,13 @@ public class TasksTest {
         assertThat(allTasksForUser, hasSize(2));
         assertThat(allTasksForUser, hasItem("Udělat myčku (splněno: " + java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd").format(java.time.LocalDate.now()) + ")"));
         assertThat(allTasksForUser, hasItem("Prádlo (splněno: " + java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd").format(java.time.LocalDate.now()) + ")"));
-        assertThat(allTasksForUser, not(hasItem("Prádlo (splněno: " + java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd").format(java.time.LocalDate.now()) + ")")));
+        assertThat(allTasksForUser, not(hasItem("Jit se psem (splněno: " + java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd").format(java.time.LocalDate.now()) + ")")));
     }
 
+    @Test
+    void testGetAllTasksForUserWhenNotLoggedIn() {
+        List<String> allTasksForUser = userTask.getAllTasksForUser(null);
+        assertThat(allTasksForUser, is(empty()));
+    }
 }
 
