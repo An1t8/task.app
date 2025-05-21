@@ -53,5 +53,11 @@ public class MainController {
         return Map.of();
     }
 
+    @GetMapping("/profile/all-tasks")
+    public List<String> getAllProfileTasks(HttpSession session) {
+        String user = (String) session.getAttribute("user");
+        return user != null ? taskStorage.getAllTasksForUser(user) : List.of();
+    }
+
 
 }

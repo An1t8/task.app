@@ -109,6 +109,21 @@ public class UserTask {
         }
         return allUserTasks;
     }
+
+    public List<String> getAllTasksForUser(String user) {
+        JSONArray tasks = loadTasks();
+        List<String> userAllTasks = new ArrayList<>();
+        for (int i = 0; i < tasks.length(); i++) {
+            JSONObject taskJson = tasks.getJSONObject(i);
+            if (taskJson.getString("user").equals(user)) {
+                String task = taskJson.getString("task");
+                String date = taskJson.getString("date");
+                userAllTasks.add(task + " (splněno: " + date + ")");
+            }
+        }
+        return userAllTasks;
+    }
+
 }
 
 
