@@ -64,31 +64,35 @@ public class MainController {
     }
 
     /**
-     * Returns the email address of the currently logged-in user.
-     * Used for displaying user information and checking authentication status.
-     * @param session HTTP session containing user authentication information
-     * @return User's email address or "Not logged in" if not authenticated
+     * Returns the email of the currently logged-in user.
+     * If no user is authenticated, returns 401 Unauthorized.
+     * @param session HTTP session containing user information
+     * @return ResponseEntity with email or 401 status
      */
     @GetMapping("/email")
-    public String getEmail(HttpSession session) {
+    public ResponseEntity<String> getEmail(HttpSession session) {
         String user = (String) session.getAttribute("user");
-        return user != null ? user : "Not logged in";
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(401).body("Not logged in");
+        }
     }
 
     /**
      * Retrieves task completion data for all users in the system.
-     * Only available to authenticated users for viewing other users' progress.
      * Tasks are returned with completion dates.
      * @param session HTTP session containing user authentication information
-     * @return Map where keys are user emails and values are lists of completed tasks with dates or empty map if not authenticated
+     * @return ResponseEntity with map or 401 Unauthorized if not authenticated
      */
     @GetMapping("/all-profiles")
-    public Map<String, List<String>> getAllProfiles(HttpSession session) {
+    public ResponseEntity<Map<String, List<String>>> getAllProfiles(HttpSession session) {
         String user = (String) session.getAttribute("user");
         if (user != null) {
-            return taskStorage.getAllUserTasks();
+            return ResponseEntity.ok(taskStorage.getAllUserTasks());
+        } else {
+            return ResponseEntity.status(401).build();
         }
-        return Map.of();
     }
 
     /**
@@ -104,6 +108,12 @@ public class MainController {
     }
 
 
+    /**
+     * Undoes the last completed task for the logged-in user.
+     * Returns 400 Bad Request if no user is authenticated or undo fails.
+     * @param session HTTP session containing user information
+     * @return ResponseEntity 200 OK on success, 400 Bad Request otherwise
+     */
     @PostMapping("/undo-last")
     public ResponseEntity<Void> undoLastTask(HttpSession session) {
         String user = (String) session.getAttribute("user");

@@ -83,9 +83,13 @@
 <script>
     function loadUserData() {
         fetch('/api/profile')
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Unauthorized");
+                return res.json();
+            })
             .then(tasks => {
                 const ul = document.getElementById('done-tasks');
+                ul.innerHTML = '';
                 if (tasks.length === 0) {
                     ul.innerHTML = '<p>Dnes zatím žádné úkoly.</p>';
                 } else {
@@ -98,7 +102,7 @@
             })
             .catch(err => {
                 console.error("Error loading today's tasks:", err);
-                document.getElementById('done-tasks').innerHTML = '<p style="color: red;">Nepodařilo se načíst dnešní úkoly.</p>';
+                window.location.href = "/login.html";
             });
 
         fetch('/api/profile/all-tasks')

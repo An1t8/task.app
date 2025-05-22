@@ -173,6 +173,11 @@ public class UserTask {
         return userAllTasks;
     }
 
+    /**
+     * Removes the most recently completed task for the given user from today.
+     * @param user Email address of the user
+     * @return true if a task was removed, false otherwise
+     */
     public boolean removeLastTask(String user) {
         LocalDate today = LocalDate.now();
         String todayString = DATE_FORMATTER.format(today);

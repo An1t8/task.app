@@ -51,61 +51,85 @@
 </div>
 
 <script>
-  fetch('/api/email')
-          .then(res => res.text())
-          .then(email => {
-            if (email === "Nepřihlášen") {
-              window.location.href = "/login.html";
-              return;
-            }
+  function loadAllProfiles() {
+    fetch('/api/all-profiles')
+            .then(res => {
+              if (!res.ok) {
+                throw new Error("Unauthorized");
+              }
+              return res.json();
+            })
+            .then(userProfiles => {
+              console.log(userProfiles);
 
-            return fetch('/api/all-profiles');
-          })
-          .then(res => res.json())
-          .then(userProfiles => {
-            const container = document.getElementById('all-profiles-container');
-            container.innerHTML = '';
+              const container = document.getElementById('all-profiles-container');
+              container.innerHTML = '';
 
-            if (Object.keys(userProfiles).length === 0) {
-              container.innerHTML = '<p>Zatím nejsou k dispozici žádné údaje.</p>';
-              return;
-            }
-
-            const sortedUsers = Object.keys(userProfiles).sort();
-
-            sortedUsers.forEach(email => {
-              const tasks = userProfiles[email];
-
-              const userSection = document.createElement('div');
-              userSection.className = 'user-section';
-
-              const userEmail = document.createElement('div');
-              userEmail.className = 'user-email';
-              userEmail.textContent = email;
-              userSection.appendChild(userEmail);
-
-              if (tasks.length === 0) {
-                const noTasks = document.createElement('p');
-                noTasks.textContent = 'Žádné splněné úkoly';
-                userSection.appendChild(noTasks);
-              } else {
-                const tasksList = document.createElement('ul');
-                tasks.forEach(task => {
-                  const taskItem = document.createElement('li');
-                  taskItem.textContent = task;
-                  tasksList.appendChild(taskItem);
-                });
-                userSection.appendChild(tasksList);
+              if (!userProfiles || Object.keys(userProfiles).length === 0) {
+                container.innerHTML = '<p>Zatím nejsou k dispozici žádné údaje.</p>';
+                return;
               }
 
-              container.appendChild(userSection);
+              const sortedUsers = Object.keys(userProfiles).sort();
+
+              sortedUsers.forEach(email => {
+                const tasks = userProfiles[email];
+
+                const userSection = document.createElement('div');
+                userSection.className = 'user-section';
+
+                const userEmail = document.createElement('div');
+                userEmail.className = 'user-email';
+                userEmail.textContent = email;
+                userSection.appendChild(userEmail);
+
+                if (tasks.length === 0) {
+                  const noTasks = document.createElement('p');
+                  noTasks.textContent = 'Žádné splněné úkoly';
+                  userSection.appendChild(noTasks);
+                } else {
+                  const tasksList = document.createElement('ul');
+                  tasks.forEach(task => {
+                    const taskItem = document.createElement('li');
+                    taskItem.textContent = task;
+                    tasksList.appendChild(taskItem);
+                  });
+                  userSection.appendChild(tasksList);
+                }
+
+                container.appendChild(userSection);
+              });
+            })
+            .catch(err => {
+              console.error("Error loading profiles:", err);
+              window.location.href = "/login.html";
             });
-          })
-          .catch(error => {
-            console.error("Error loading profiles data:", error);
-            document.getElementById('all-profiles-container').innerHTML =
-                    '<p style="color: red;">Chyba při načítání dat: ' + error.message + '</p>';
-          });
+  }
+
+  function checkLoginAndLoadProfiles() {
+    fetch('/api/email')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.text();
+            })
+            .then(email => {
+              if (email === "Nepřihlášen") {
+                window.location.href = "/login.html";
+                return;
+              }
+              loadAllProfiles();
+            })
+            .catch(err => {
+              console.error("Error checking login status:", err);
+              window.location.href = "/login.html";
+            });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    checkLoginAndLoadProfiles();
+  });
 </script>
 </body>
 </html>

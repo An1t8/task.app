@@ -25,6 +25,10 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * Unit tests for the tasks-related endpoints in the TaskApp application.
+ * Tests various functionalities such as retrieving tasks, completing tasks, checking user profile tasks, and removing tasks.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TasksTest {

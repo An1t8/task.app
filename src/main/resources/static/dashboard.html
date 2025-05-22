@@ -45,6 +45,13 @@
             background-color: white;
             cursor: pointer;
         }
+        #loading {
+            display: none;
+            font-size: 18px;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -58,6 +65,17 @@
 </div>
 
 <script>
+    fetch('/api/email')
+        .then(res => {
+            if (!res.ok) throw new Error('Unauthorized');
+            return res.text();
+        })
+        .then(email => {
+            console.log('Logged in as:', email);
+        })
+        .catch(() => {
+            window.location.href = '/login.html';
+        });
     fetch('/api/tasks')
         .then(res => res.json())
         .then(tasks => {
@@ -90,17 +108,21 @@
                 li.appendChild(label);
                 list.appendChild(li);
             });
+            document.getElementById('loading').style.display = 'none';
+
         });
     function undoLastTask() {
-        fetch('/api/undo-last', { method: 'POST' })
-            .then(res => {
-                if (res.ok) {
-                    alert('Poslední úkol byl vrácen.');
-                    location.reload();
-                } else {
-                    alert('Nepodařilo se vrátit úkol.');
-                }
-            });
+        if (confirm('Opravdu chcete vrátit poslední úkol?')) {
+            fetch('/api/undo-last', {method: 'POST'})
+                .then(res => {
+                    if (res.ok) {
+                        alert('Poslední úkol byl vrácen.');
+                        location.reload();
+                    } else {
+                        alert('Nepodařilo se vrátit úkol.');
+                    }
+                });
+        }
     }
 </script>
 </body>

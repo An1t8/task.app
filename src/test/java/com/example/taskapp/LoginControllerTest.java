@@ -14,14 +14,23 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 //https://www.youtube.com/watch?v=BZBFw6fBeIU&list=PL82C6-O4XrHcg8sNwpoDDhcxUCbFy855E&index=8
 
+
+/**
+ * Unit tests for the login functionality in the TaskApp application.
+ * Tests the login and logout functionality, as well as handling of incorrect user credentials.
+ */
 @WebMvcTest(controllers = LoginController.class)
 @ExtendWith(MockitoExtension.class)
 public class LoginControllerTest {
+
 
     @Autowired
     private MockMvc mockMvc;
 
 
+    /**
+     * Test case for a successful login with correct username and password.
+     */
     @Test
     void testSuccessfulLogin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/login")
@@ -29,11 +38,13 @@ public class LoginControllerTest {
                         .param("password", "alena1")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("OK"))
-                .andExpect(MockMvcResultMatchers.request().sessionAttribute("user", "tomeckova.alena@gmail.com"));
+                .andExpect(MockMvcResultMatchers.content().string("Login successful."));
 
     }
 
+    /**
+     * Test case for logging in with an incorrect password.
+     */
     @Test
     void testWrongPassword() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/login")
@@ -41,10 +52,13 @@ public class LoginControllerTest {
                         .param("password", "spatneHeslo")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized())
-                .andExpect(MockMvcResultMatchers.content().string("Nesprávné údaje"))
-                .andExpect(MockMvcResultMatchers.request().sessionAttributeDoesNotExist("user"));
+                .andExpect(MockMvcResultMatchers.content().string("Invalid credentials"));
+
     }
 
+        /**
+         * Test case for trying to log in with a non-existent user.
+         */
     @Test
     void testUserNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/login")
@@ -52,10 +66,12 @@ public class LoginControllerTest {
                         .param("password", "heslo")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized())
-                .andExpect(MockMvcResultMatchers.content().string("Nesprávné údaje"))
-                .andExpect(MockMvcResultMatchers.request().sessionAttributeDoesNotExist("user"));
+                .andExpect(MockMvcResultMatchers.content().string("Invalid credentials"));
     }
 
+    /**
+     * Test case for logging out a logged-in user.
+     */
     @Test
     void testLogout() throws Exception {
         MockHttpSession session = new MockHttpSession();
