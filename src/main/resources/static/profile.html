@@ -97,8 +97,8 @@
                 }
             })
             .catch(err => {
-                console.error("Chyba při načítání dnešních úkolů:", err);
-                document.getElementById('done-tasks').innerHTML = '<p style="color: red;">Nepodařilo se načíst úkoly.</p>';
+                console.error("Error loading today's tasks:", err);
+                document.getElementById('done-tasks').innerHTML = '<p style="color: red;">Nepodařilo se načíst dnešní úkoly.</p>';
             });
 
         fetch('/api/profile/all-tasks')
@@ -117,7 +117,7 @@
                 }
             })
             .catch(err => {
-                console.error("Chyba při načítání všech úkolů:", err);
+                console.error("Error loading all tasks:", err);
                 document.getElementById('all-user-tasks-list').innerHTML = '<p style="color: red;">Nepodařilo se načíst všechny úkoly.</p>';
             });
     }
@@ -139,7 +139,7 @@
                 loadUserData();
             })
             .catch(err => {
-                console.error("Chyba při kontrole přihlášení:", err);
+                console.error("Error checking login status:", err);
                 window.location.href = "/login.html";
             });
     });

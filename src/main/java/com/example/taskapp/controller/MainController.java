@@ -66,12 +66,12 @@ public class MainController {
      * Returns the email address of the currently logged-in user.
      * Used for displaying user information and checking authentication status.
      * @param session HTTP session containing user authentication information
-     * @return User's email address or "Nepřihlášen" if not authenticated
+     * @return User's email address or "Not logged in" if not authenticated
      */
     @GetMapping("/email")
     public String getEmail(HttpSession session) {
         String user = (String) session.getAttribute("user");
-        return user != null ? user : "Nepřihlášen";
+        return user != null ? user : "Not logged in";
     }
 
     /**

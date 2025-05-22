@@ -44,7 +44,7 @@ public class LoginController {
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("users.txt");
             if (inputStream == null) {
-                System.err.println("Soubor users.txt nebyl nalezen!");
+                System.err.println("users.txt file not found");
                 return;
             }
             try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -56,12 +56,12 @@ public class LoginController {
                         String password = parts[1].trim();
                         users.put(username, password);
                     } else {
-                        System.err.println("Chybný řádek: " + line);
+                        System.err.println("Invalid line in file: " + line);
                     }
                 }
             }
         } catch (IOException e) {
-            System.err.println("Chyba při čtení users.txt: " + e.getMessage());
+            System.err.println("Error reading users.txt file: " + e.getMessage());
         }
     }
 
@@ -79,14 +79,14 @@ public class LoginController {
                                         @RequestParam String password,
                                         HttpSession session) {
         if (!isValidEmail(username)) {
-            return ResponseEntity.badRequest().body("Neaplatný email!");
+            return ResponseEntity.badRequest().body("Invalid email format.");
         }
         String storedPassword = users.get(username);
         if (storedPassword != null && storedPassword.equals(password)) {
             session.setAttribute("user", username);
-            return ResponseEntity.ok("OK");
+            return ResponseEntity.ok("Login successful.");
         } else {
-            return ResponseEntity.status(401).body("Nesprávné údaje");
+            return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
 

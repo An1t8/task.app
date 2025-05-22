@@ -102,6 +102,7 @@
             });
           })
           .catch(error => {
+            console.error("Error loading profiles data:", error);
             document.getElementById('all-profiles-container').innerHTML =
                     '<p style="color: red;">Chyba při načítání dat: ' + error.message + '</p>';
           });
