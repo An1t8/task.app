@@ -1,6 +1,7 @@
 package com.example.taskapp.controller;
 
 import com.example.taskapp.storage.UserTask;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -100,6 +101,16 @@ public class MainController {
     public List<String> getAllProfileTasks(HttpSession session) {
         String user = (String) session.getAttribute("user");
         return user != null ? taskStorage.getAllTasksForUser(user) : List.of();
+    }
+
+
+    @PostMapping("/undo-last")
+    public ResponseEntity<Void> undoLastTask(HttpSession session) {
+        String user = (String) session.getAttribute("user");
+        if (user != null && taskStorage.removeLastTask(user)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 

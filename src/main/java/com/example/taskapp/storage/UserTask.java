@@ -173,6 +173,21 @@ public class UserTask {
         return userAllTasks;
     }
 
+    public boolean removeLastTask(String user) {
+        LocalDate today = LocalDate.now();
+        String todayString = DATE_FORMATTER.format(today);
+        JSONArray tasks = loadTasks();
+        for (int i = tasks.length() - 1; i >= 0; i--) {
+            JSONObject taskJson = tasks.getJSONObject(i);
+            if (taskJson.getString("user").equals(user) && taskJson.getString("date").equals(todayString)) {
+                tasks.remove(i);
+                saveTasks(tasks);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
 

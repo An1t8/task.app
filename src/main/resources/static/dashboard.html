@@ -35,6 +35,16 @@
             border-radius: 4px;
             background-color: white;
         }
+        button {
+            text-decoration: none;
+            color: black;
+            margin-right: 15px;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +53,8 @@
 <div class="navigation">
 <a href="/profile.html">👤 Profil</a>
 <a href="/all-profiles.html">👥 Všechny profily</a>
+    <button onclick="undoLastTask()">↩️ Vrátit poslední úkol</button>
+
 </div>
 
 <script>
@@ -79,6 +91,17 @@
                 list.appendChild(li);
             });
         });
+    function undoLastTask() {
+        fetch('/api/undo-last', { method: 'POST' })
+            .then(res => {
+                if (res.ok) {
+                    alert('Poslední úkol byl vrácen.');
+                    location.reload();
+                } else {
+                    alert('Nepodařilo se vrátit úkol.');
+                }
+            });
+    }
 </script>
 </body>
 </html>
