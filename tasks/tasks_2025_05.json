@@ -111,31 +111,6 @@
   },
   {
     "date": "2025-05-22",
-    "task": "Prádlo",
-    "user": "another@user.cz"
-  },
-  {
-    "date": "2025-05-22",
-    "task": "Prádlo",
-    "user": "another@user.cz"
-  },
-  {
-    "date": "2025-05-22",
-    "task": "Prádlo",
-    "user": "another@user.cz"
-  },
-  {
-    "date": "2025-05-22",
-    "task": "Prádlo",
-    "user": "another@user.cz"
-  },
-  {
-    "date": "2025-05-22",
-    "task": "Prádlo",
-    "user": "another@user.cz"
-  },
-  {
-    "date": "2025-05-22",
     "task": "Umýt zem",
     "user": "tomeckova.alena@gmail.com"
   },
@@ -145,8 +120,13 @@
     "user": "tomeckova.alena@gmail.com"
   },
   {
-    "date": "2025-05-22",
-    "task": "Prádlo",
-    "user": "another@user.cz"
+    "date": "2025-05-26",
+    "task": "Umýt zem",
+    "user": "anee.tomeckova@gmail.com"
+  },
+  {
+    "date": "2025-05-27",
+    "task": "Jít se psem",
+    "user": "anee.tomeckova@gmail.com"
   }
 ]

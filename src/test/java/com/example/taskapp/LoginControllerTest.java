@@ -12,9 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-//https://www.youtube.com/watch?v=BZBFw6fBeIU&list=PL82C6-O4XrHcg8sNwpoDDhcxUCbFy855E&index=8
-
-
 /**
  * Unit tests for the login functionality in the TaskApp application.
  * Tests the login and logout functionality, as well as handling of incorrect user credentials.
