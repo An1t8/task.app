@@ -44,7 +44,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>cz.myapp.TaskAppApplication</mainClass> <!-- uprav název podle své main třídy -->
+					<mainClass>com.example.taskapp.TaskappApplication</mainClass> <!-- uprav název podle své main třídy -->
 				</configuration>
 			</plugin>
 		</plugins>
